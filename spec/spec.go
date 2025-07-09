@@ -1,9 +1,8 @@
-package mcprobot
+package spec
 
 const JsonRPC = "2.0"
 
-// const ProtocolVersion = "2025-06-18"
-const ProtocolVersion = "2025-03-26"
+const ProtocolVersion = "2025-06-18"
 
 const MethodInitialize = "initialize"
 const MethodNotificationsInitialized = "notifications/initialized"
@@ -44,6 +43,7 @@ type (
 		ServerInfo   *Info          `json:"serverInfo,omitempty"`
 		Instructions string         `json:"instructions,omitempty"`
 		Error        *Error         `json:"error,omitempty"`
+		NextCursor   string         `json:"nextCursor,omitempty"`
 	}
 
 	Error struct {

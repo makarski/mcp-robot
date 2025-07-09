@@ -1,4 +1,4 @@
-package mcprobot
+package spec
 
 const (
 	ErrorCodeInvalidRequest      = -32600

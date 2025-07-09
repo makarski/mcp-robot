@@ -1,9 +1,11 @@
-package mcprobot
+package server
 
 import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"github.com/makarski/mcp-robot/spec"
 )
 
 type HTTPServer struct {
@@ -31,7 +33,7 @@ func (s *HTTPServer) ListenAndServe(pattern string) func(addr string, mux *http.
 func (s *HTTPServer) entrypoint(w http.ResponseWriter, req *http.Request) {
 	fmt.Println("entered entrypoint")
 
-	var rpcReq Request[int]
+	var rpcReq spec.Request[int]
 	if err := json.NewDecoder(req.Body).Decode(&rpcReq); err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
