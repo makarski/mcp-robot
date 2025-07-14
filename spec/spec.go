@@ -14,6 +14,8 @@ const MethodToolsList = "tools/list"
 const MethodToolsCall = "tools/call"
 const MethodNotificationsToolsListChanged = "notifications/tools/list_changed"
 
+const MethodPing = "ping"
+
 type (
 	ID interface {
 		string | int

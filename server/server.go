@@ -57,6 +57,22 @@ func newServer(name, version string) *server {
 	}
 }
 
+func (s *server) okEmptyResponse(w io.RPCResponseWriter, rpcReq *spec.Request[int]) {
+	response := spec.Response[int]{
+		Jsonrpc: spec.JsonRPC,
+		ID:      rpcReq.ID,
+		Result:  map[string]any{},
+	}
+
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		rw := io.NewResponseWriter(w, rpcReq.ID)
+		rw.WriteError(
+			spec.ErrorCodeInternalError,
+			"failed to encode empty response",
+		)
+	}
+}
+
 func (s *server) initializeHandler(w io.RPCResponseWriter, rpcReq *spec.Request[int]) {
 	capabilities := s.capabilities()
 
@@ -189,6 +205,8 @@ func (s *server) capabilities() map[string]spec.CapabilityParam {
 
 func (s *server) resolveHandler(rpcReq spec.Request[int]) (handler.MCPHandler, error) {
 	switch rpcReq.Method {
+	case spec.MethodNotificationsInitialized, spec.MethodPing:
+		return handler.MCPHandlerFunc(s.okEmptyResponse), nil
 	case spec.MethodInitialize:
 		return handler.MCPHandlerFunc(s.initializeHandler), nil
 	case spec.MethodToolsList:
